@@ -1,12 +1,28 @@
 <template>
   <div id="app">
-
+    <div class="moon"></div>
+    <span v-for="star in stars" class="star" :style="{ left: star.x+'px', top: star.y+'px' }"></span>
   </div>
 </template>
 
 <script>
+import {randomX, randomY} from "@/helpers/random";
+
 export default {
-  name: "app"
+  name: "app",
+  data () {
+    return {
+      nb_stars: 0,
+      stars: []
+    }
+  },
+  mounted() {
+    for (let i = 0; i < 100; i++) {
+      let new_star = {x: randomX(), y: randomY()}
+      this.stars.push(new_star)
+    }
+    console.log(this.stars)
+  }
 };
 </script>
 
