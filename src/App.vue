@@ -1,6 +1,12 @@
 <template>
   <div id="app">
     <Moon />
+    <transition name="fade">
+    <ShootingStar
+      v-if="visible"
+    />
+    </transition>
+
     <transition-group name="fade">
       <Star 
         v-for="star in totalStars"
@@ -18,20 +24,27 @@
 </template>
 
 <script>
-import Star from "@/components/Star";
 import Moon from "@/components/Moon";
+import Star from "@/components/Star";
+import ShootingStar from "@/components/ShootingStar";
 
 export default {
   name: "app",
+
   components: {
-    Star,
-    Moon
+    Moon, Star, ShootingStar
   },
   data() {
     return {
-      totalStars: 200
+      totalStars: 200,
+      visible: false
     };
-  }
+  },
+  mounted() {
+    setInterval(() => {
+      this.visible = !this.visible
+    },2000);
+  },
 };
 </script>
 
@@ -51,7 +64,6 @@ body {
 }
 
 /* Transitions */
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;

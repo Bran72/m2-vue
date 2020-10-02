@@ -1,9 +1,9 @@
 <template>
   <div 
-    class="star shooting-star"
+    class="shooting-star"
     :style="style"
   >
-
+    {{this.$refs.shootingPos}}
   </div>
 </template>
 
@@ -11,7 +11,7 @@
 import { randomX, randomY } from "../helpers/random";
 
 export default {
-  name: "Star",
+  name: "ShootingStar",
   computed: {
     randomX() {
       return randomX();
@@ -25,12 +25,18 @@ export default {
         left: ${this.randomX}px;
       `;
     }
+  },
+  mounted() {
+    console.log('Mounted')
+  },
+  beforeUpdate() {
+    console.log('Update')
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.star {
+.shooting-star {
   position: absolute;
   background-color: red;
   border-radius: 100%;
