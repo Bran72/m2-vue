@@ -1,12 +1,21 @@
 <template>
   <div id="app">
+    <div id="select_stars">
+      <label>
+        Pour modifier votre nombre d'étoiles:
+        <input v-model.number="totalStars" placeholder="Nombre d'étoiles" type="range">
+      </label>
+    </div>
+
     <div class="moon"></div>
-    <div
-      class="star"
-      v-for="star in totalStars"
-      :key="star"
-      :style="`top: ${getRandomY()}px; left: ${getRandomX()}px;`"
-    ></div>
+    <transition-group  name="slide-fade">
+      <div
+        class="star"
+        v-for="star in totalStars"
+        :key="star"
+        :style="`top: ${getRandomY()}px; left: ${getRandomX()}px;`"
+      ></div>
+    </transition-group>
   </div>
 </template>
 
@@ -35,6 +44,20 @@ export default {
 body {
   margin: 0;
 }
+
+.slide-fade-enter, .slide-fade-leave-to {
+  opacity: 0;
+}
+.slide-fade-enter-active, .slide-fade-leave-active
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+  transition: all 1.5s;
+}
+
+#select_stars {
+  padding: 1rem;
+  color: #fff;
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
