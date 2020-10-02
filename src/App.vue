@@ -1,41 +1,39 @@
 <template>
   <div id="app">
-    <div class="moon"></div>
+    <Moon />
+
     <transition-group name="fade">
-      <div
-        class="star"
+      <Star
         v-for="star in totalStars"
         :key="star"
-        :style="`top: ${getRandomY()}px; left: ${getRandomX()}px;`"
-      ></div>
+      />
     </transition-group>
+
     <input 
       type="range"
       name="stars" 
       min="10"
-      max="600"
+      max="500"
       v-model.number="totalStars"
     />
   </div>
 </template>
 
 <script>
-import { randomX, randomY } from "./helpers/random";
+import Moon from "@/components/Moon";
+import Star from "@/components/Star";
 
 export default {
   name: "app",
+  components: {
+    Moon, Star
+  },
   data() {
     return {
       totalStars: 200
     };
   },
   methods: {
-    getRandomX() {
-      return randomX();
-    },
-    getRandomY() {
-      return randomY();
-    }
   }
 };
 </script>
@@ -63,28 +61,14 @@ body {
   width: 4px;
 }
 
-.moon {
-  position: absolute;
-  height: 100px;
-  width: 100px;
-  background-image: url("https://3dexport.com/items/2015/02/20/385337/100201/moon_texture_3d_model_c4d_max_obj_fbx_ma_lwo_3ds_3dm_stl_1258985_o.png");
-  background-size: cover;
-  box-shadow: 0px 0px 12px 4px white;
-  filter: brightness(1.5);
-  z-index: 1;
-  right: 10%;
-  top: 15%;
-  border-radius: 100px;
-}
-
 /* Transitions */
-
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: all 1.25s ease-in-out;
 }
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+  transition: all 1.25s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 </style>
