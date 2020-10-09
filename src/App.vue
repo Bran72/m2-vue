@@ -1,11 +1,20 @@
 <template>
   <div id="app">
     <transition name="fade">
-      <login-modal
+      <Modal
+        type="pseudo"
         v-if="!isLoggedIn"
-        @onSubmitLogin="setLogin"
+        @onSubmitInput="setLogin"
       />
     </transition>
+    <transition name="fade">
+      <Modal
+          type="voeux"
+          v-if="isShootingStarVisible && isLoggedIn"
+          @onSubmitInput="setVoeux"
+      />
+    </transition>
+
     <Moon />
     <transition-group name="fade">
       <common-star 
@@ -16,6 +25,8 @@
     <shooting-star 
       v-if="isShootingStarVisible"
     />
+
+    <p v-if="isLoggedIn" style="padding: 2rem 0 1rem; margin: 0; color: white">Hello {{ userName }} !</p>
     <input 
       type="range"
       name="stars" 
@@ -30,19 +41,21 @@
 import CommonStar from "@/components/Common-star";
 import ShootingStar from "@/components/Shooting-star";
 import Moon from "@/components/Moon";
-import LoginModal from "@/components/Login-modal";
+import Modal from "@/components/Modal/Modal";
 
 export default {
   name: "app",
   components: {
+    Modal,
     CommonStar,
     ShootingStar,
-    Moon,
-    LoginModal
+    Moon
   },
   data() {
     return {
-      userName: "",
+      userName: '',
+      userVoeux: '',
+      userListVoeux: [],
       totalStars: 200,
       isShootingStarVisible: true
     };
@@ -56,6 +69,13 @@ export default {
     setLogin(userName) {
       this.userName = userName;
       localStorage.setItem("userName", userName);
+    },
+    setVoeux(userVoeux) {
+      this.userVoeux = userVoeux
+
+      this.userListVoeux.push(userVoeux)
+
+      localStorage.setItem("userListVoeux", JSON.stringify(this.userListVoeux));
     }
   },
   mounted() {
@@ -65,8 +85,11 @@ export default {
   },
   created() {
     const userName = localStorage.getItem("userName");
-    if (userName) {
-      this.userName = userName;
+    const userListVoeux = JSON.parse(localStorage.getItem("userListVoeux"));
+
+    if (userName) this.userName = userName;
+    if (userListVoeux && userListVoeux.length >= 1) {
+      this.userListVoeux = userListVoeux;
     }
   }
 };
