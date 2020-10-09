@@ -22,6 +22,7 @@ export default {
   },
   methods: {
     emitPseudo() {
+      console.log(this.pseudo)
       if(this.pseudo.trim() !== '') this.$emit('hasPseudo', this.pseudo)
       else alert('Non mais choisit un pseudo roh, ce n\'est pas compliqué !!! 😡😤')
     }
@@ -34,7 +35,7 @@ export default {
   },
   watch: {
     pseudo(newPseudo) {
-      localStorage.pseudo = newPseudo;
+      if(newPseudo.trim() !== '') localStorage.pseudo = newPseudo;
     }
   }
 }
