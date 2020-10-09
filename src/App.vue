@@ -2,7 +2,7 @@
   <div id="app">
     <Moon />
     <transition-group name="fade">
-      <Star 
+      <CommonStar
         v-for="star in totalStars"
         :key="star"
       />
@@ -21,14 +21,15 @@
 </template>
 
 <script>
-import Star from "@/components/Star";
-import ShootingStar from "@/components/Shooting-star";
+// import Star from "@/components/Star";
+import CommonStar from "@/components/CommonStar";
+import ShootingStar from "@/components/ShootingStar";
 import Moon from "@/components/Moon";
 
 export default {
   name: "app",
   components: {
-    Star,
+    CommonStar,
     ShootingStar,
     Moon
   },
