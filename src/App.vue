@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <Pseudo v-if="!pseudo" @hasPseudo="checkPseudo" />
+
     <Moon />
     <transition-group name="fade">
       <common-star 
@@ -10,6 +12,8 @@
     <shooting-star 
       v-if="isShootingStarVisible"
     />
+
+    <p v-if="pseudo" class="userPseudo">Bienvenue {{ pseudo }} !</p>
     <input 
       type="range"
       name="stars" 
@@ -21,6 +25,7 @@
 </template>
 
 <script>
+import Pseudo from "@/components/Modal/ModalPseudo";
 import CommonStar from "@/components/Common-star";
 import ShootingStar from "@/components/Shooting-star";
 import Moon from "@/components/Moon";
@@ -28,15 +33,23 @@ import Moon from "@/components/Moon";
 export default {
   name: "app",
   components: {
+    Pseudo,
     CommonStar,
     ShootingStar,
     Moon
   },
   data() {
     return {
+      pseudo: '',
       totalStars: 200,
       isShootingStarVisible: true
     };
+  },
+  methods: {
+    checkPseudo(pseudo) {
+      this.pseudo = pseudo
+      console.log(pseudo)
+    }
   },
   mounted() {
     setInterval(() => {
@@ -70,5 +83,11 @@ body {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.userPseudo {
+  color: aqua;
+  margin: 0;
+  padding: 2rem 0 1rem;
 }
 </style>
