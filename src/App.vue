@@ -1,11 +1,7 @@
 <template>
   <div id="app">
-    <transition name="fade">
-      <login-modal
-        v-if="!isLoggedIn"
-        @onSubmitLogin="setLogin"
-      />
-    </transition>
+    <Pseudo v-if="!pseudo" @hasPseudo="checkPseudo" :class="pseudo ? 'hiddenModal' : ''" />
+
     <Moon />
     <transition-group name="fade">
       <common-star 
@@ -16,6 +12,8 @@
     <shooting-star 
       v-if="isShootingStarVisible"
     />
+
+    <p v-if="pseudo" class="userPseudo">Bienvenue {{ pseudo }} !</p>
     <input 
       type="range"
       name="stars" 
@@ -27,6 +25,7 @@
 </template>
 
 <script>
+import Pseudo from "@/components/Modal/ModalPseudo";
 import CommonStar from "@/components/Common-star";
 import ShootingStar from "@/components/Shooting-star";
 import Moon from "@/components/Moon";
@@ -35,6 +34,7 @@ import LoginModal from "@/components/Login-modal";
 export default {
   name: "app",
   components: {
+    Pseudo,
     CommonStar,
     ShootingStar,
     Moon,
@@ -42,20 +42,15 @@ export default {
   },
   data() {
     return {
-      userName: "",
+      pseudo: '',
       totalStars: 200,
       isShootingStarVisible: true
     };
   },
-  computed: {
-    isLoggedIn() {
-      return this.userName;
-    }
-  },
   methods: {
-    setLogin(userName) {
-      this.userName = userName;
-      localStorage.setItem("userName", userName);
+    checkPseudo(pseudo) {
+      this.pseudo = pseudo
+      console.log(pseudo)
     }
   },
   mounted() {
@@ -90,5 +85,11 @@ body {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.userPseudo {
+  color: aqua;
+  margin: 0;
+  padding: 2rem 0 1rem;
 }
 </style>
