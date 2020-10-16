@@ -5,8 +5,9 @@
       <input
         type="text"
         v-model="input"
-        @keypress.enter="submitInput"
-      >
+        >
+        <!--@keypress.enter="submitInput"
+      >-->
       <input
         type="submit"
         @click.prevent="submitInput"
