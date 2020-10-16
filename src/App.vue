@@ -2,16 +2,23 @@
   <div id="app">
     <transition name="fade">
       <Modal
+        type="pseudo"
         v-if="!isLoggedIn"
-        title="Entrez votre pseudo :"
-        @onSubmitForm="setLogin"
-      />
-      <Modal
-        v-if="isLoggedIn && makeAWish"
-        title="Faites un voeux !"
-        @onSubmitForm="setWish"
+        @onSubmitInput="setLogin"
       />
     </transition>
+    <transition name="fade">
+      <Modal
+          type="voeux"
+          v-if="isShootingStarVisible && isLoggedIn"
+          @onSubmitInput="setVoeux"
+      />
+    </transition>
+
+    <WishList
+        :wish="userListVoeux"
+    />
+
     <Moon />
     <transition-group name="fade">
       <common-star 
@@ -20,9 +27,11 @@
       />
     </transition-group>
     <shooting-star 
-      v-if="makeAWish"
+      v-if="isShootingStarVisible"
     />
-    <input 
+
+    <p v-if="isLoggedIn" style="padding: 2rem 0 1rem; margin: 0; color: white">Hello {{ userName }} !</p>
+    <input
       type="range"
       name="stars" 
       min="10"
@@ -36,22 +45,25 @@
 import CommonStar from "@/components/Common-star";
 import ShootingStar from "@/components/Shooting-star";
 import Moon from "@/components/Moon";
-import Modal from "@/components/Modal";
+import Modal from "@/components/Modal/Modal";
+import WishList from "@/components/WishList";
 
 export default {
   name: "app",
   components: {
+    Modal,
     CommonStar,
     ShootingStar,
     Moon,
-    Modal
+    WishList
   },
   data() {
     return {
-      userName: "",
+      userName: '',
+      userVoeux: '',
+      userListVoeux: [],
       totalStars: 200,
-      makeAWish: true,
-      wishes: []
+      isShootingStarVisible: true
     };
   },
   computed: {
@@ -64,23 +76,27 @@ export default {
       this.userName = userName;
       localStorage.setItem("userName", userName);
     },
-    setWish(wish) {
-      this.wishes.push({
-        userName: this.userName,
-        wish
-      });
-      this.makeAWish = false;
+    setVoeux(userVoeux) {
+      const wish = userVoeux.trim()
+      this.userVoeux = wish
+
+      if(wish !== '') this.userListVoeux.push({'username': this.userName, 'wish': wish})
+
+      localStorage.setItem("userListVoeux", JSON.stringify(this.userListVoeux));
     }
   },
   mounted() {
     setInterval(() => {
-      this.makeAWish = !this.makeAWish;
+      this.isShootingStarVisible = !this.isShootingStarVisible;
     }, 6000);
   },
   created() {
     const userName = localStorage.getItem("userName");
-    if (userName) {
-      this.userName = userName;
+    const userListVoeux = JSON.parse(localStorage.getItem("userListVoeux"));
+
+    if (userName) this.userName = userName;
+    if (userListVoeux && userListVoeux.length >= 1) {
+      this.userListVoeux = userListVoeux;
     }
   }
 };
