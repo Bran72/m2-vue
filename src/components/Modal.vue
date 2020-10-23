@@ -3,14 +3,8 @@
     <div class="modal">
       <h2>{{ title }}</h2>
       <form>
-        <input 
-          type="text"
-          v-model="inputValue"
-        >
-        <input 
-          type="submit"
-          @click.prevent="submitForm"
-        >
+        <input type="text" v-model="inputValue" />
+        <input type="submit" @click.prevent="submitForm" />
       </form>
     </div>
   </div>
@@ -57,4 +51,3 @@ export default {
   box-shadow: 0 0 6px 0 rgb(61, 61, 61);
 }
 </style>
-

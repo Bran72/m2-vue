@@ -41,6 +41,7 @@ import ShootingStar from "@/components/Shooting-star";
 import Moon from "@/components/Moon";
 import Modal from "@/components/Modal";
 import WishesList from "@/components/Wishes-list";
+import { db } from './../firebase';
 
 export default {
   name: "app",
@@ -59,6 +60,9 @@ export default {
       wishes: []
     };
   },
+  firestore: {
+    wishes: db.ref('whishes')
+  },
   computed: {
     isLoggedIn() {
       return this.userName;
@@ -74,6 +78,10 @@ export default {
         userName: this.userName,
         wish
       });
+      db.ref('wishes').push({
+        userName: this.userName,
+        wish
+      })
       this.makeAWish = false;
     }
   },
@@ -81,6 +89,10 @@ export default {
     setInterval(() => {
       this.makeAWish = !this.makeAWish;
     }, 6000);
+    db.ref('wishes').once('value', snapshot => {
+      const documents = snapshot.val()
+      this.wishes = Object.values(documents)
+    })
   },
   created() {
     const userName = localStorage.getItem("userName");
