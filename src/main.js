@@ -1,11 +1,11 @@
-import Vue from "vue";
-import Vuefire from "vuefire";
+import Vue from 'vue';
+import { rtdbPlugin } from 'vuefire'
 import App from "./App.vue";
+
+Vue.use(rtdbPlugin);
 
 Vue.config.productionTip = false;
 
-Vue.use(Vuefire);
-
 new Vue({
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app');

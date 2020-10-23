@@ -1,16 +1,10 @@
 <template>
   <div class="modal-wrapper">
     <div class="modal">
-      <h2>{{ title }}</h2>
+      <slot></slot>
       <form>
-        <input 
-          type="text"
-          v-model="inputValue"
-        >
-        <input 
-          type="submit"
-          @click.prevent="submitForm"
-        >
+        <input type="text" v-model="inputValue" />
+        <input type="submit" @click.prevent="submitForm" />
       </form>
     </div>
   </div>
@@ -21,8 +15,7 @@ export default {
   name: "Modal",
   props: {
     title: {
-      type: String,
-      required: true
+      type: String
     }
   },
   data() {
@@ -57,4 +50,3 @@ export default {
   box-shadow: 0 0 6px 0 rgb(61, 61, 61);
 }
 </style>
-

@@ -26,8 +26,8 @@ export default {
 <style lang="scss" scoped>
 .wishes-list {
   position: fixed;
-  right: 10%;
-  bottom: 5%;
+  right: 2%;
+  bottom: 1rem;
   color: white;
 }
 

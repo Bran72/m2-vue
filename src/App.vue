@@ -3,14 +3,17 @@
     <transition name="fade">
       <Modal
         v-if="!isLoggedIn"
-        title="Entrez votre pseudo :"
+        title=""
         @onSubmitForm="setLogin"
-      />
+      >
+        <h2>Entrez votre pseudo :</h2>
+      </Modal>
       <Modal
         v-if="isLoggedIn && makeAWish"
-        title="Faites un voeux !"
         @onSubmitForm="setWish"
-      />
+      >
+        <h2>Faites un voeux !</h2>
+      </Modal>
     </transition>
     <Moon />
     <transition-group name="fade">
@@ -41,8 +44,7 @@ import ShootingStar from "@/components/Shooting-star";
 import Moon from "@/components/Moon";
 import Modal from "@/components/Modal";
 import WishesList from "@/components/Wishes-list";
-
-import { db } from "@/services/firebase";
+import { db } from '../firebase';
 
 export default {
   name: "app",
@@ -57,11 +59,12 @@ export default {
     return {
       userName: "",
       totalStars: 200,
-      makeAWish: true
+      makeAWish: true,
+      wishes: []
     };
   },
-  firebase: {
-    wishes: db.ref("wishes")
+  firestore: {
+    wishes: db.ref('wishes')
   },
   computed: {
     isLoggedIn() {
@@ -74,10 +77,14 @@ export default {
       localStorage.setItem("userName", userName);
     },
     setWish(wish) {
-      db.ref("wishes").push({
+      this.wishes.push({
         userName: this.userName,
         wish
       });
+      db.ref('wishes').push({
+        userName: this.userName,
+        wish
+      })
       this.makeAWish = false;
     }
   },
@@ -85,6 +92,10 @@ export default {
     setInterval(() => {
       this.makeAWish = !this.makeAWish;
     }, 6000);
+    db.ref('wishes').once('value', snapshot => {
+      const documents = snapshot.val()
+      this.wishes = Object.values(documents)
+    })
   },
   created() {
     const userName = localStorage.getItem("userName");
